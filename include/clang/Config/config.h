@@ -61,7 +61,7 @@
 #define CLANG_HAVE_RLIMITS 1
 
 /* The LLVM product name and version */
-#define BACKEND_PACKAGE_STRING "LLVM 10.0.4git"
+#define BACKEND_PACKAGE_STRING "LLVM 10.0.5git"
 
 /* Linker version detected at compile time. */
 /* #undef HOST_LINK_VERSION */
