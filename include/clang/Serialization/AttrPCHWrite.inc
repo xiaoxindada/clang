@@ -79,6 +79,13 @@ Record.push_back(SA->getInterrupt());
       Record.AddStmt(Val);
     break;
   }
+  case attr::AcquireHandle: {
+    const auto *SA = cast<AcquireHandleAttr>(A);
+    Record.push_back(SA->isInherited());
+    Record.push_back(A->isImplicit());
+    Record.AddString(SA->getHandleType());
+    break;
+  }
   case attr::AcquiredAfter: {
     const auto *SA = cast<AcquiredAfterAttr>(A);
     Record.push_back(SA->isInherited());
@@ -206,11 +213,15 @@ Record.push_back(SA->getInterrupt());
     Record.push_back(SA->getIsPointer());
     break;
   }
-  case attr::ArmMveAlias: {
-    const auto *SA = cast<ArmMveAliasAttr>(A);
+  case attr::ArmBuiltinAlias: {
+    const auto *SA = cast<ArmBuiltinAliasAttr>(A);
     Record.push_back(SA->isInherited());
     Record.push_back(A->isImplicit());
     Record.AddIdentifierRef(SA->getBuiltinName());
+    break;
+  }
+  case attr::ArmMveStrictPolymorphism: {
+    Record.push_back(A->isImplicit());
     break;
   }
   case attr::Artificial: {
@@ -314,6 +325,13 @@ Record.push_back(SA->getType());
     Record.push_back(A->isImplicit());
     break;
   }
+  case attr::CFGuard: {
+    const auto *SA = cast<CFGuardAttr>(A);
+    Record.push_back(SA->isInherited());
+    Record.push_back(A->isImplicit());
+Record.push_back(SA->getGuard());
+    break;
+  }
   case attr::CFICanonicalJumpTable: {
     const auto *SA = cast<CFICanonicalJumpTableAttr>(A);
     Record.push_back(SA->isInherited());
@@ -364,6 +382,18 @@ Record.push_back(SA->getType());
   }
   case attr::CUDADevice: {
     const auto *SA = cast<CUDADeviceAttr>(A);
+    Record.push_back(SA->isInherited());
+    Record.push_back(A->isImplicit());
+    break;
+  }
+  case attr::CUDADeviceBuiltinSurfaceType: {
+    const auto *SA = cast<CUDADeviceBuiltinSurfaceTypeAttr>(A);
+    Record.push_back(SA->isInherited());
+    Record.push_back(A->isImplicit());
+    break;
+  }
+  case attr::CUDADeviceBuiltinTextureType: {
+    const auto *SA = cast<CUDADeviceBuiltinTextureTypeAttr>(A);
     Record.push_back(SA->isInherited());
     Record.push_back(A->isImplicit());
     break;
@@ -448,6 +478,16 @@ Record.push_back(SA->getType());
     Record.push_back(SA->isInherited());
     Record.push_back(A->isImplicit());
     Record.AddDeclRef(SA->getFunctionDecl());
+    break;
+  }
+  case attr::CmseNSCall: {
+    Record.push_back(A->isImplicit());
+    break;
+  }
+  case attr::CmseNSEntry: {
+    const auto *SA = cast<CmseNSEntryAttr>(A);
+    Record.push_back(SA->isInherited());
+    Record.push_back(A->isImplicit());
     break;
   }
   case attr::CodeSeg: {
@@ -756,6 +796,10 @@ Record.push_back(SA->getExtensibility());
   case attr::LifetimeBound: {
     const auto *SA = cast<LifetimeBoundAttr>(A);
     Record.push_back(SA->isInherited());
+    Record.push_back(A->isImplicit());
+    break;
+  }
+  case attr::LoaderUninitialized: {
     Record.push_back(A->isImplicit());
     break;
   }
@@ -1127,21 +1171,7 @@ Record.push_back(SA->getDevType());
     Record.push_back(SA->isInherited());
     Record.push_back(A->isImplicit());
     Record.AddStmt(SA->getVariantFuncRef());
-    Record.push_back(SA->scores_size());
-    for (auto &Val : SA->scores())
-      Record.AddStmt(Val);
-    Record.push_back(SA->ctxSelectorSets_size());
-    for (auto &Val : SA->ctxSelectorSets())
-      Record.push_back(Val);
-    Record.push_back(SA->ctxSelectors_size());
-    for (auto &Val : SA->ctxSelectors())
-      Record.push_back(Val);
-    Record.push_back(SA->implVendors_size());
-    for (auto &Val : SA->implVendors())
-      Record.AddString(Val);
-    Record.push_back(SA->deviceKinds_size());
-    for (auto &Val : SA->deviceKinds())
-      Record.AddString(Val);
+    Record.writeOMPTraitInfo(SA->getTraitInfos());
     break;
   }
   case attr::OMPReferencedVar: {
@@ -1446,6 +1476,14 @@ Record.push_back(SA->getParamState());
     Record.push_back(SA->getType());
     break;
   }
+  case attr::PatchableFunctionEntry: {
+    const auto *SA = cast<PatchableFunctionEntryAttr>(A);
+    Record.push_back(SA->isInherited());
+    Record.push_back(A->isImplicit());
+    Record.push_back(SA->getCount());
+    Record.push_back(SA->getOffset());
+    break;
+  }
   case attr::Pcs: {
     const auto *SA = cast<PcsAttr>(A);
     Record.push_back(SA->isInherited());
@@ -1562,6 +1600,13 @@ Record.push_back(SA->getInterrupt());
       Record.AddStmt(Val);
     break;
   }
+  case attr::ReleaseHandle: {
+    const auto *SA = cast<ReleaseHandleAttr>(A);
+    Record.push_back(SA->isInherited());
+    Record.push_back(A->isImplicit());
+    Record.AddString(SA->getHandleType());
+    break;
+  }
   case attr::RenderScriptKernel: {
     Record.push_back(A->isImplicit());
     break;
@@ -1610,6 +1655,12 @@ Record.push_back(SA->getState());
     break;
   }
   case attr::SPtr: {
+    Record.push_back(A->isImplicit());
+    break;
+  }
+  case attr::SYCLKernel: {
+    const auto *SA = cast<SYCLKernelAttr>(A);
+    Record.push_back(SA->isInherited());
     Record.push_back(A->isImplicit());
     break;
   }
@@ -1813,6 +1864,13 @@ Record.push_back(SA->getImplicitReason());
     Record.push_back(A->isImplicit());
     break;
   }
+  case attr::UseHandle: {
+    const auto *SA = cast<UseHandleAttr>(A);
+    Record.push_back(SA->isInherited());
+    Record.push_back(A->isImplicit());
+    Record.AddString(SA->getHandleType());
+    break;
+  }
   case attr::Used: {
     const auto *SA = cast<UsedAttr>(A);
     Record.push_back(SA->isInherited());
@@ -1882,6 +1940,13 @@ Record.push_back(SA->getVisibility());
     Record.push_back(SA->isInherited());
     Record.push_back(A->isImplicit());
     Record.AddString(SA->getAliasee());
+    break;
+  }
+  case attr::WebAssemblyExportName: {
+    const auto *SA = cast<WebAssemblyExportNameAttr>(A);
+    Record.push_back(SA->isInherited());
+    Record.push_back(A->isImplicit());
+    Record.AddString(SA->getExportName());
     break;
   }
   case attr::WebAssemblyImportModule: {

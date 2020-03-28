@@ -34,6 +34,7 @@ namespace llvm {
 class Function;
 class LoopInfo;
 class raw_ostream;
+class PostDominatorTree;
 class TargetLibraryInfo;
 class Value;
 
@@ -74,6 +75,9 @@ public:
     return *this;
   }
 
+  bool invalidate(Function &, const PreservedAnalyses &PA,
+                  FunctionAnalysisManager::Invalidator &);
+
   void releaseMemory();
 
   void print(raw_ostream &OS) const;
@@ -94,7 +98,7 @@ public:
                                        const BasicBlock *Dst) const;
 
   BranchProbability getEdgeProbability(const BasicBlock *Src,
-                                       succ_const_iterator Dst) const;
+                                       const_succ_iterator Dst) const;
 
   /// Test if an edge is hot relative to other out-edges of the Src.
   ///
@@ -187,8 +191,10 @@ private:
   /// Track the set of blocks that always lead to a cold call.
   SmallPtrSet<const BasicBlock *, 16> PostDominatedByColdCall;
 
-  void updatePostDominatedByUnreachable(const BasicBlock *BB);
-  void updatePostDominatedByColdCall(const BasicBlock *BB);
+  void computePostDominatedByUnreachable(const Function &F,
+                                         PostDominatorTree *PDT);
+  void computePostDominatedByColdCall(const Function &F,
+                                      PostDominatorTree *PDT);
   bool calcUnreachableHeuristics(const BasicBlock *BB);
   bool calcMetadataWeights(const BasicBlock *BB);
   bool calcColdCallHeuristics(const BasicBlock *BB);

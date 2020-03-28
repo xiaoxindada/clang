@@ -84,6 +84,15 @@
         return 5;
     break;
   }
+  case AT_AcquireHandle: {
+    if (Name == "acquire_handle" && getSyntax() == AttributeCommonInfo::AS_GNU && Scope == "")
+        return 0;
+    if (Name == "acquire_handle" && getSyntax() == AttributeCommonInfo::AS_CXX11 && Scope == "clang")
+        return 1;
+    if (Name == "acquire_handle" && getSyntax() == AttributeCommonInfo::AS_C2x && Scope == "clang")
+        return 2;
+    break;
+  }
   case AT_AcquiredAfter: {
     if (Name == "acquired_after" && getSyntax() == AttributeCommonInfo::AS_GNU && Scope == "")
         return 0;
@@ -210,12 +219,21 @@
         return 5;
     break;
   }
-  case AT_ArmMveAlias: {
-    if (Name == "__clang_arm_mve_alias" && getSyntax() == AttributeCommonInfo::AS_GNU && Scope == "")
+  case AT_ArmBuiltinAlias: {
+    if (Name == "__clang_arm_builtin_alias" && getSyntax() == AttributeCommonInfo::AS_GNU && Scope == "")
         return 0;
-    if (Name == "__clang_arm_mve_alias" && getSyntax() == AttributeCommonInfo::AS_CXX11 && Scope == "clang")
+    if (Name == "__clang_arm_builtin_alias" && getSyntax() == AttributeCommonInfo::AS_CXX11 && Scope == "clang")
         return 1;
-    if (Name == "__clang_arm_mve_alias" && getSyntax() == AttributeCommonInfo::AS_C2x && Scope == "clang")
+    if (Name == "__clang_arm_builtin_alias" && getSyntax() == AttributeCommonInfo::AS_C2x && Scope == "clang")
+        return 2;
+    break;
+  }
+  case AT_ArmMveStrictPolymorphism: {
+    if (Name == "__clang_arm_mve_strict_polymorphism" && getSyntax() == AttributeCommonInfo::AS_GNU && Scope == "")
+        return 0;
+    if (Name == "__clang_arm_mve_strict_polymorphism" && getSyntax() == AttributeCommonInfo::AS_CXX11 && Scope == "clang")
+        return 1;
+    if (Name == "__clang_arm_mve_strict_polymorphism" && getSyntax() == AttributeCommonInfo::AS_C2x && Scope == "clang")
         return 2;
     break;
   }
@@ -310,6 +328,11 @@
         return 2;
     break;
   }
+  case AT_CFGuard: {
+    if (Name == "guard" && getSyntax() == AttributeCommonInfo::AS_Declspec && Scope == "")
+        return 0;
+    break;
+  }
   case AT_CFICanonicalJumpTable: {
     if (Name == "cfi_canonical_jump_table" && getSyntax() == AttributeCommonInfo::AS_GNU && Scope == "")
         return 0;
@@ -379,6 +402,20 @@
     if (Name == "device" && getSyntax() == AttributeCommonInfo::AS_GNU && Scope == "")
         return 0;
     if (Name == "__device__" && getSyntax() == AttributeCommonInfo::AS_Declspec && Scope == "")
+        return 1;
+    break;
+  }
+  case AT_CUDADeviceBuiltinSurfaceType: {
+    if (Name == "device_builtin_surface_type" && getSyntax() == AttributeCommonInfo::AS_GNU && Scope == "")
+        return 0;
+    if (Name == "__device_builtin_surface_type__" && getSyntax() == AttributeCommonInfo::AS_Declspec && Scope == "")
+        return 1;
+    break;
+  }
+  case AT_CUDADeviceBuiltinTextureType: {
+    if (Name == "device_builtin_texture_type" && getSyntax() == AttributeCommonInfo::AS_GNU && Scope == "")
+        return 0;
+    if (Name == "__device_builtin_texture_type__" && getSyntax() == AttributeCommonInfo::AS_Declspec && Scope == "")
         return 1;
     break;
   }
@@ -457,6 +494,16 @@
         return 0;
     if (Name == "cleanup" && getSyntax() == AttributeCommonInfo::AS_CXX11 && Scope == "gnu")
         return 1;
+    break;
+  }
+  case AT_CmseNSCall: {
+    if (Name == "cmse_nonsecure_call" && getSyntax() == AttributeCommonInfo::AS_GNU && Scope == "")
+        return 0;
+    break;
+  }
+  case AT_CmseNSEntry: {
+    if (Name == "cmse_nonsecure_entry" && getSyntax() == AttributeCommonInfo::AS_GNU && Scope == "")
+        return 0;
     break;
   }
   case AT_CodeSeg: {
@@ -803,6 +850,15 @@
         return 0;
     if (Name == "lifetimebound" && getSyntax() == AttributeCommonInfo::AS_CXX11 && Scope == "clang")
         return 1;
+    break;
+  }
+  case AT_LoaderUninitialized: {
+    if (Name == "loader_uninitialized" && getSyntax() == AttributeCommonInfo::AS_GNU && Scope == "")
+        return 0;
+    if (Name == "loader_uninitialized" && getSyntax() == AttributeCommonInfo::AS_CXX11 && Scope == "clang")
+        return 1;
+    if (Name == "loader_uninitialized" && getSyntax() == AttributeCommonInfo::AS_C2x && Scope == "clang")
+        return 2;
     break;
   }
   case AT_LockReturned: {
@@ -1521,6 +1577,12 @@
         return 0;
     if (Name == "constant" && getSyntax() == AttributeCommonInfo::AS_Keyword && Scope == "")
         return 1;
+    if (Name == "opencl_constant" && getSyntax() == AttributeCommonInfo::AS_GNU && Scope == "")
+        return 2;
+    if (Name == "opencl_constant" && getSyntax() == AttributeCommonInfo::AS_CXX11 && Scope == "clang")
+        return 3;
+    if (Name == "opencl_constant" && getSyntax() == AttributeCommonInfo::AS_C2x && Scope == "clang")
+        return 4;
     break;
   }
   case AT_OpenCLGenericAddressSpace: {
@@ -1528,6 +1590,12 @@
         return 0;
     if (Name == "generic" && getSyntax() == AttributeCommonInfo::AS_Keyword && Scope == "")
         return 1;
+    if (Name == "opencl_generic" && getSyntax() == AttributeCommonInfo::AS_GNU && Scope == "")
+        return 2;
+    if (Name == "opencl_generic" && getSyntax() == AttributeCommonInfo::AS_CXX11 && Scope == "clang")
+        return 3;
+    if (Name == "opencl_generic" && getSyntax() == AttributeCommonInfo::AS_C2x && Scope == "clang")
+        return 4;
     break;
   }
   case AT_OpenCLGlobalAddressSpace: {
@@ -1535,6 +1603,12 @@
         return 0;
     if (Name == "global" && getSyntax() == AttributeCommonInfo::AS_Keyword && Scope == "")
         return 1;
+    if (Name == "opencl_global" && getSyntax() == AttributeCommonInfo::AS_GNU && Scope == "")
+        return 2;
+    if (Name == "opencl_global" && getSyntax() == AttributeCommonInfo::AS_CXX11 && Scope == "clang")
+        return 3;
+    if (Name == "opencl_global" && getSyntax() == AttributeCommonInfo::AS_C2x && Scope == "clang")
+        return 4;
     break;
   }
   case AT_OpenCLIntelReqdSubGroupSize: {
@@ -1554,6 +1628,12 @@
         return 0;
     if (Name == "local" && getSyntax() == AttributeCommonInfo::AS_Keyword && Scope == "")
         return 1;
+    if (Name == "opencl_local" && getSyntax() == AttributeCommonInfo::AS_GNU && Scope == "")
+        return 2;
+    if (Name == "opencl_local" && getSyntax() == AttributeCommonInfo::AS_CXX11 && Scope == "clang")
+        return 3;
+    if (Name == "opencl_local" && getSyntax() == AttributeCommonInfo::AS_C2x && Scope == "clang")
+        return 4;
     break;
   }
   case AT_OpenCLNoSVM: {
@@ -1566,6 +1646,12 @@
         return 0;
     if (Name == "private" && getSyntax() == AttributeCommonInfo::AS_Keyword && Scope == "")
         return 1;
+    if (Name == "opencl_private" && getSyntax() == AttributeCommonInfo::AS_GNU && Scope == "")
+        return 2;
+    if (Name == "opencl_private" && getSyntax() == AttributeCommonInfo::AS_CXX11 && Scope == "clang")
+        return 3;
+    if (Name == "opencl_private" && getSyntax() == AttributeCommonInfo::AS_C2x && Scope == "clang")
+        return 4;
     break;
   }
   case AT_OpenCLUnrollHint: {
@@ -1657,6 +1743,13 @@
         return 4;
     if (Name == "pass_dynamic_object_size" && getSyntax() == AttributeCommonInfo::AS_C2x && Scope == "clang")
         return 5;
+    break;
+  }
+  case AT_PatchableFunctionEntry: {
+    if (Name == "patchable_function_entry" && getSyntax() == AttributeCommonInfo::AS_GNU && Scope == "")
+        return 0;
+    if (Name == "patchable_function_entry" && getSyntax() == AttributeCommonInfo::AS_CXX11 && Scope == "gnu")
+        return 1;
     break;
   }
   case AT_Pcs: {
@@ -1775,6 +1868,15 @@
         return 7;
     break;
   }
+  case AT_ReleaseHandle: {
+    if (Name == "release_handle" && getSyntax() == AttributeCommonInfo::AS_GNU && Scope == "")
+        return 0;
+    if (Name == "release_handle" && getSyntax() == AttributeCommonInfo::AS_CXX11 && Scope == "clang")
+        return 1;
+    if (Name == "release_handle" && getSyntax() == AttributeCommonInfo::AS_C2x && Scope == "clang")
+        return 2;
+    break;
+  }
   case AT_RenderScriptKernel: {
     if (Name == "kernel" && getSyntax() == AttributeCommonInfo::AS_GNU && Scope == "")
         return 0;
@@ -1837,6 +1939,15 @@
   case AT_SPtr: {
     if (Name == "__sptr" && getSyntax() == AttributeCommonInfo::AS_Keyword && Scope == "")
         return 0;
+    break;
+  }
+  case AT_SYCLKernel: {
+    if (Name == "sycl_kernel" && getSyntax() == AttributeCommonInfo::AS_GNU && Scope == "")
+        return 0;
+    if (Name == "sycl_kernel" && getSyntax() == AttributeCommonInfo::AS_CXX11 && Scope == "clang")
+        return 1;
+    if (Name == "sycl_kernel" && getSyntax() == AttributeCommonInfo::AS_C2x && Scope == "clang")
+        return 2;
     break;
   }
   case AT_ScopedLockable: {
@@ -2078,6 +2189,15 @@
         return 3;
     break;
   }
+  case AT_UseHandle: {
+    if (Name == "use_handle" && getSyntax() == AttributeCommonInfo::AS_GNU && Scope == "")
+        return 0;
+    if (Name == "use_handle" && getSyntax() == AttributeCommonInfo::AS_CXX11 && Scope == "clang")
+        return 1;
+    if (Name == "use_handle" && getSyntax() == AttributeCommonInfo::AS_C2x && Scope == "clang")
+        return 2;
+    break;
+  }
   case AT_Used: {
     if (Name == "used" && getSyntax() == AttributeCommonInfo::AS_GNU && Scope == "")
         return 0;
@@ -2172,6 +2292,15 @@
         return 0;
     if (Name == "weakref" && getSyntax() == AttributeCommonInfo::AS_CXX11 && Scope == "gnu")
         return 1;
+    break;
+  }
+  case AT_WebAssemblyExportName: {
+    if (Name == "export_name" && getSyntax() == AttributeCommonInfo::AS_GNU && Scope == "")
+        return 0;
+    if (Name == "export_name" && getSyntax() == AttributeCommonInfo::AS_CXX11 && Scope == "clang")
+        return 1;
+    if (Name == "export_name" && getSyntax() == AttributeCommonInfo::AS_C2x && Scope == "clang")
+        return 2;
     break;
   }
   case AT_WebAssemblyImportModule: {
