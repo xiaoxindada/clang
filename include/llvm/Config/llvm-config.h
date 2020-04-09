@@ -18,7 +18,7 @@
 /* #undef LLVM_ENABLE_DUMP */
 
 /* Define if we link Polly to the tools */
-/* #undef LINK_POLLY_INTO_TOOLS */
+#define LINK_POLLY_INTO_TOOLS
 
 /* Target triple LLVM will generate code for by default */
 #define LLVM_DEFAULT_TARGET_TRIPLE "x86_64-unknown-linux-gnu"
@@ -72,10 +72,10 @@
 #define LLVM_VERSION_MINOR 0
 
 /* Patch version of the LLVM API */
-#define LLVM_VERSION_PATCH 5
+#define LLVM_VERSION_PATCH 6
 
 /* LLVM version string */
-#define LLVM_VERSION_STRING "10.0.5git"
+#define LLVM_VERSION_STRING "10.0.6git"
 
 /* Whether LLVM records statistics for use with GetStatistics(),
  * PrintStatistics() or PrintStatisticsJSON()

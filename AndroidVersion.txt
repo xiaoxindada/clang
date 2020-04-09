@@ -1,2 +1,2 @@
-10.0.5
-based on r377782c
+10.0.6
+based on r377782d
